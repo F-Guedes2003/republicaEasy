@@ -1,11 +1,11 @@
 package org.republica.easy.republicaeasy.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 import java.util.UUID;
 
+@Table(name = "users")
 @Entity
 public class User {
     @Id
@@ -13,8 +13,8 @@ public class User {
     private String name;
     private String password;
     private String email;
-    @OneToOne
-    private Address address;
+    @Embedded
+    private Localization localization;
 
     public void setId(UUID id) {
         this.id = id;
@@ -48,11 +48,11 @@ public class User {
         this.email = email;
     }
 
-    public Address getAddress() {
-        return address;
+    public Localization getLocalization() {
+        return localization;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddress(Localization address) {
+        this.localization = address;
     }
 }

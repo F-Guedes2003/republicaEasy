@@ -1,6 +1,8 @@
 package org.republica.easy.republicaeasy.services;
 
 import org.republica.easy.republicaeasy.Entities.User;
+import org.republica.easy.republicaeasy.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,13 @@ import java.util.List;
 
 @Service
 public class UserService {
+    private UserRepository repository;
+
+    @Autowired
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
+
     public ResponseEntity<String> register(User user) {
         if (user == null) {
             return ResponseEntity
@@ -25,6 +34,7 @@ public class UserService {
                     .body("User Created Successfully!");
         }
 
+        repository.save(user);
         return ResponseEntity
                 .badRequest()
                 .body("invalid fields: " + String.join(", ", invalidFields));
@@ -37,7 +47,7 @@ public class UserService {
 
         if (user.getEmail() == null) invalidFieldsList.add("email");
 
-        if (user.getAddress() == null) invalidFieldsList.add("address");
+        if (user.getLocalization() == null) invalidFieldsList.add("localization");
 
         if (user.getPassword() == null) invalidFieldsList.add("password");
 
