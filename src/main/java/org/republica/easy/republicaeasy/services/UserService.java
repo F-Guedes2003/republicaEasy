@@ -29,12 +29,12 @@ public class UserService {
         var invalidFields = validateUser(user);
 
         if (invalidFields.isEmpty()) {
+            repository.save(user);
             return ResponseEntity
                     .status(201)
                     .body("User Created Successfully!");
         }
 
-        repository.save(user);
         return ResponseEntity
                 .badRequest()
                 .body("invalid fields: " + String.join(", ", invalidFields));
@@ -48,6 +48,8 @@ public class UserService {
         if (user.getEmail() == null) invalidFieldsList.add("email");
 
         if (user.getLocalization() == null) invalidFieldsList.add("localization");
+
+        System.out.println("city>: " + user.getLocalization());
 
         if (user.getPassword() == null) invalidFieldsList.add("password");
 
