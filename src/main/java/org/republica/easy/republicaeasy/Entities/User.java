@@ -1,7 +1,6 @@
 package org.republica.easy.republicaeasy.Entities;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
 import java.util.UUID;
 
@@ -53,7 +52,7 @@ public class User {
         return localization;
     }
 
-    public void setAddress(Localization address) {
+    public void setLocalization(Localization address) {
         this.localization = address;
     }
 }
