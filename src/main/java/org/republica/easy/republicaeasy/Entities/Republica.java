@@ -19,6 +19,8 @@ public class Republica {
     private int limit;
     private int contact;
 
+    protected Republica() {}
+
     public UUID getId() {
         return id;
     }
