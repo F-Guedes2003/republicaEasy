@@ -9,6 +9,7 @@ import java.util.UUID;
 @Entity
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private String password;
