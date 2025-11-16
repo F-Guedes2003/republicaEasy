@@ -1,8 +1,6 @@
 package org.republica.easy.republicaeasy.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.*;
 
@@ -10,6 +8,7 @@ import java.util.*;
 public class Republica {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private String description;
@@ -17,8 +16,6 @@ public class Republica {
     private String imageUrl;
     private int limitSpot;
     private int contact;
-    @OneToMany(mappedBy = "id")
-    private Set<User> users;
 
     protected Republica() {}
 
@@ -76,5 +73,16 @@ public class Republica {
 
     public void setContact(int contact) {
         this.contact = contact;
+    }
+
+    @Override
+    public String toString() {
+        return "Republica{name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", localization='" + localization + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", limitSpot=" + limitSpot +
+                ", contact=" + contact +
+                '}';
     }
 }
