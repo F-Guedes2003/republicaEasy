@@ -1,0 +1,88 @@
+package org.republica.easy.republicaeasy.Entities;
+
+import jakarta.persistence.*;
+
+import java.util.*;
+
+@Entity
+public class Republica {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private String name;
+    private String description;
+    private String localization;
+    private String imageUrl;
+    private int limitSpot;
+    private int contact;
+
+    protected Republica() {}
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public int getLimitSpot() {
+        return limitSpot;
+    }
+
+    public void setLimitSpot(int limitSpot) {
+        this.limitSpot = limitSpot;
+    }
+
+    public int getContact() {
+        return contact;
+    }
+
+    public void setContact(int contact) {
+        this.contact = contact;
+    }
+
+    @Override
+    public String toString() {
+        return "Republica{name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", localization='" + localization + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", limitSpot=" + limitSpot +
+                ", contact=" + contact +
+                '}';
+    }
+}
