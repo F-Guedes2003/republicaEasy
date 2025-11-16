@@ -2,7 +2,7 @@ package org.republica.easy.republicaeasy.Entities;
 
 public class LoginResponse {
     private String token;
-    private String error;
+    private String refreshToken;
     private Long ExpiresIn;
 
     public LoginResponse() {
@@ -25,11 +25,11 @@ public class LoginResponse {
         ExpiresIn = expiresIn;
     }
 
-    public String getError() {
-        return error;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

@@ -2,8 +2,8 @@ package org.republica.easy.republicaeasy.services;
 
 import org.republica.easy.republicaeasy.DTOS.LoginDto;
 import org.republica.easy.republicaeasy.Entities.LoginResponse;
+import org.republica.easy.republicaeasy.Entities.RefreshRequest;
 import org.republica.easy.republicaeasy.Entities.User;
-import org.republica.easy.republicaeasy.ErrorType;
 import org.republica.easy.republicaeasy.repositories.UserRepository;
 import org.republica.easy.republicaeasy.util.FieldErrorMessageGenerator;
 import org.republica.easy.republicaeasy.util.MissingFieldState;
@@ -15,20 +15,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class AuthService {
     private UserRepository repository;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository repository, AuthenticationManager authenticationManager, JWTService jwtService, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository repository, AuthenticationManager authenticationManager, JWTService jwtService, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
@@ -67,18 +66,29 @@ public class UserService {
                 .body(errorMessage);
     }
 
+    public ResponseEntity<LoginResponse> refresh(RefreshRequest req) {
+        String refreshToken = req.refreshToken();
+        String username = jwtService.extractUsername(refreshToken);
+        if (refreshToken == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .build();
+        }
+        var user = repository.findUserByEmail(username);
+
+        if(user.isEmpty()) return ResponseEntity.status(403).build();
+
+        var newToken = jwtService.generateToken(user.get());
+        LoginResponse response = new LoginResponse();
+        response.setToken(newToken);
+        return ResponseEntity.ok(response);
+    }
+
     public ResponseEntity<LoginResponse> login(LoginDto loginInput) {
         var authenticatedUser = authenticate(loginInput);
 
-        if(authenticatedUser.isEmpty()) {
-            var errorBody = new LoginResponse();
-            errorBody.setError("User do not exists");
-            return ResponseEntity
-                    .status(400)
-                    .body(errorBody);
-        }
-
         String jwtToken = jwtService.generateToken(authenticatedUser.get());
+        String refreshToken = jwtService.generateRefreshToken(authenticatedUser.get());
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);

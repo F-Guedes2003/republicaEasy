@@ -21,6 +21,9 @@ public class JWTService {
     private String secretKey;
     @Value("${security.jwt.expiration.time}")
     private Long expirationTime;
+    @Value("${security.refresh.jwt.expiration.time}")
+    private Long refreshExpirationTime;
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -37,6 +40,14 @@ public class JWTService {
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildToken(extraClaims, userDetails, expirationTime);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, refreshExpirationTime);
+    }
+
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return buildToken(extraClaims, userDetails, refreshExpirationTime);
     }
 
     public long getExpirationTime() {
