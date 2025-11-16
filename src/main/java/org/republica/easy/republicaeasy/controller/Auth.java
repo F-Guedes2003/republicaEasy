@@ -1,5 +1,7 @@
 package org.republica.easy.republicaeasy.controller;
 
+import org.republica.easy.republicaeasy.DTOS.LoginDto;
+import org.republica.easy.republicaeasy.Entities.LoginResponse;
 import org.republica.easy.republicaeasy.Entities.User;
 import org.republica.easy.republicaeasy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +24,10 @@ public class Auth {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         return service.register(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginDto loginInput) {
+        return service.login(loginInput);
     }
 }

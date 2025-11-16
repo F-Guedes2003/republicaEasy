@@ -1,5 +1,7 @@
 package org.republica.easy.republicaeasy.services;
 
+import org.republica.easy.republicaeasy.DTOS.LoginDto;
+import org.republica.easy.republicaeasy.Entities.LoginResponse;
 import org.republica.easy.republicaeasy.Entities.User;
 import org.republica.easy.republicaeasy.ErrorType;
 import org.republica.easy.republicaeasy.repositories.UserRepository;
@@ -8,19 +10,29 @@ import org.republica.easy.republicaeasy.util.MissingFieldState;
 import org.republica.easy.republicaeasy.util.RepeatedFieldState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
     private UserRepository repository;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, AuthenticationManager authenticationManager, JWTService jwtService, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public ResponseEntity<String> register(User user) {
@@ -35,6 +47,7 @@ public class UserService {
         List<String> repeatedFields = isRepeated(user);
 
         if (missingFields.isEmpty() && repeatedFields.isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             repository.save(user);
             return ResponseEntity
                     .status(201)
@@ -52,6 +65,36 @@ public class UserService {
         return ResponseEntity
                 .badRequest()
                 .body(errorMessage);
+    }
+
+    public ResponseEntity<LoginResponse> login(LoginDto loginInput) {
+        var authenticatedUser = authenticate(loginInput);
+
+        if(authenticatedUser.isEmpty()) {
+            var errorBody = new LoginResponse();
+            errorBody.setError("User do not exists");
+            return ResponseEntity
+                    .status(400)
+                    .body(errorBody);
+        }
+
+        String jwtToken = jwtService.generateToken(authenticatedUser.get());
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setToken(jwtToken);
+        loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        return ResponseEntity.ok(loginResponse);
+    }
+
+    public Optional<User> authenticate(LoginDto loginInput) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginInput.email(),
+                        loginInput.password()
+                )
+        );
+
+        return repository.findUserByEmail(loginInput.email());
     }
 
     public List<String> isRepeated(User user) {
