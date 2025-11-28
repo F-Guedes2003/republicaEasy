@@ -1,6 +1,7 @@
 package org.republica.easy.republicaeasy.services;
 
 import org.apache.tomcat.util.json.JSONParser;
+import org.republica.easy.republicaeasy.DTOS.RepublicaCriadaResponseDto;
 import org.republica.easy.republicaeasy.Entities.Republica;
 import org.republica.easy.republicaeasy.repositories.RepublicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +18,27 @@ public class RepublicaService {
         this.repository = repository;
     }
 
-    public ResponseEntity<String> register(Republica republica) {
+    public ResponseEntity<RepublicaCriadaResponseDto> register(Republica republica) {
         if(republica == null) {
-            return ResponseEntity.badRequest().body("Must provide republica data");
+            return ResponseEntity.badRequest().body(
+                    new RepublicaCriadaResponseDto(
+                            "Must provide republica data",
+                            400,
+                            null));
         }
         if(republica.toString().contains("null")){
             System.out.println(republica.toString());
-            return ResponseEntity.badRequest().body("Some attribute is null");
+            return ResponseEntity.badRequest().body(
+                    new RepublicaCriadaResponseDto(
+                            "some attribute is null",
+                              400,
+                               null));
         }
-        repository.save(republica);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Republica created successfully");
+        var republicaCriada = repository.save(republica);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new RepublicaCriadaResponseDto(
+                        "República criada com sucesso!",
+                        201,
+                        republicaCriada));
     }
 }
