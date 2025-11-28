@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/republica")
 public class RepublicaController {
     private final RepublicaRepository repository;
     private final RepublicaService service;
@@ -21,7 +21,7 @@ public class RepublicaController {
         this.repository = repository;
     }
 
-    @PostMapping("/republica")
+    @PostMapping("/")
     ResponseEntity<String> insertRepublica(@RequestBody Republica republica) {
         return service.register(republica);
     }
