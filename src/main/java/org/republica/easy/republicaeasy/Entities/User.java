@@ -17,6 +17,8 @@ public class User implements UserDetails {
     private String name;
     private String password;
     private String email;
+    @ManyToOne()
+    private Republica republica;
     @Embedded
     private Localization localization;
 
@@ -89,4 +91,8 @@ public class User implements UserDetails {
     public void setLocalization(Localization address) {
         this.localization = address;
     }
+
+    public Republica getRepublica() { return republica; }
+
+    public void setRepublica(Republica republica) { this.republica = republica; }
 }
