@@ -84,6 +84,11 @@ public class Republica {
         user.setRepublica(this);
     }
 
+    public void removeUser(User user) {
+        users.remove(user);
+        user.setRepublica(null);
+    }
+
     @Override
     public String toString() {
         return "Republica{name='" + name + '\'' +
