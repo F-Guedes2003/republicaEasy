@@ -16,6 +16,8 @@ public class Republica {
     private String imageUrl;
     private int limitSpot;
     private int contact;
+    @OneToMany(mappedBy = "republica", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> users = new ArrayList<>();
 
     protected Republica() {}
 
@@ -73,6 +75,13 @@ public class Republica {
 
     public void setContact(int contact) {
         this.contact = contact;
+    }
+
+    public List<User> getUsers() { return users; }
+
+    public void addUser(User user) {
+        users.add(user);
+        user.setRepublica(this);
     }
 
     @Override
