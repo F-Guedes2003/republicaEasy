@@ -1,6 +1,7 @@
 package org.republica.easy.republicaeasy.services;
 
 import org.republica.easy.republicaeasy.DTOS.LoginDto;
+import org.republica.easy.republicaeasy.DTOS.UserResponseDto;
 import org.republica.easy.republicaeasy.Entities.LoginResponse;
 import org.republica.easy.republicaeasy.Entities.RefreshRequest;
 import org.republica.easy.republicaeasy.Entities.User;
@@ -68,30 +69,51 @@ public class AuthService {
 
     public ResponseEntity<LoginResponse> refresh(RefreshRequest req) {
         String refreshToken = req.refreshToken();
+        if (refreshToken == null) return ResponseEntity.badRequest().build();
+
         String username = jwtService.extractUsername(refreshToken);
-        if (refreshToken == null) {
-            return ResponseEntity
-                    .badRequest()
-                    .build();
-        }
-        var user = repository.findUserByEmail(username);
+        var userOpt = repository.findUserByEmail(username);
 
-        if(user.isEmpty()) return ResponseEntity.status(403).build();
+        if (userOpt.isEmpty()) return ResponseEntity.status(403).build();
+        User user = userOpt.get();
 
-        var newToken = jwtService.generateToken(user.get());
+        String newToken = jwtService.generateToken(user);
+
+        UserResponseDto dto = new UserResponseDto(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getRepublica() != null ? user.getRepublica().getId() : null
+        );
+
         LoginResponse response = new LoginResponse();
         response.setToken(newToken);
+        response.setRefreshToken(refreshToken); // mantém
+        response.setUser(dto);
+        response.setExpiresIn(jwtService.getExpirationTime());
+
         return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<LoginResponse> login(LoginDto loginInput) {
         var authenticatedUser = authenticate(loginInput);
 
+        User user = authenticatedUser.get();
+
         String jwtToken = jwtService.generateToken(authenticatedUser.get());
         String refreshToken = jwtService.generateRefreshToken(authenticatedUser.get());
 
+        UserResponseDto dto = new UserResponseDto(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getRepublica() != null ? user.getRepublica().getId() : null
+        );
+
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
+        loginResponse.setRefreshToken(refreshToken);
+        loginResponse.setUser(dto);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
         return ResponseEntity.ok(loginResponse);
     }

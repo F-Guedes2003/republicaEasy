@@ -15,7 +15,7 @@ public class Republica {
     private String localization;
     private String imageUrl;
     private int limitSpot;
-    private int contact;
+    private String contact;
     @OneToMany(mappedBy = "republica", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
 
@@ -69,11 +69,11 @@ public class Republica {
         this.limitSpot = limitSpot;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 

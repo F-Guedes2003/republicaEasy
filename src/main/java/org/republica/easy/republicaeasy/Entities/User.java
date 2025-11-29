@@ -1,5 +1,6 @@
 package org.republica.easy.republicaeasy.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +16,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
+    @JsonIgnore
     private String password;
     private String email;
     @ManyToOne()
+    @JsonIgnore
     private Republica republica;
     @Embedded
     private Localization localization;

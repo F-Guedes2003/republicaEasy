@@ -47,7 +47,7 @@ public class UserRepService {
         var republica = possiblyRepublica.get();
         republica.addUser(possiblyUsuario.get());
         var usuario = possiblyUsuario.get();
-        UserResponseDto userDto = new UserResponseDto(usuario.getEmail(), usuario.getEmail(), republica.getId());
+        UserResponseDto userDto = new UserResponseDto(usuario.getId(), usuario.getEmail(), usuario.getEmail(), republica.getId());
         var responseDto = new UsuarioLinkadoResponseDto("usuário adicionado à república com sucesso!", 200, userDto);
         republicaRepository.save(republica);
         return ResponseEntity.ok().body(responseDto);
