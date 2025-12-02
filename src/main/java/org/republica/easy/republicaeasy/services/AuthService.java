@@ -147,7 +147,7 @@ public class AuthService {
 
         if (user.getEmail() == null || user.getEmail().isBlank()) invalidFieldsList.add("email");
 
-        if (user.getLocalization() == null) invalidFieldsList.add("localization");
+//        if (user.getLocalization() == null) invalidFieldsList.add("localization");
 
         if (user.getPassword() == null || user.getPassword().isBlank()) invalidFieldsList.add("password");
 

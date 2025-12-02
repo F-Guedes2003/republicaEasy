@@ -1,6 +1,7 @@
 package org.republica.easy.republicaeasy.controller;
 
 import org.republica.easy.republicaeasy.DTOS.LoginDto;
+import org.republica.easy.republicaeasy.DTOS.UserRegisterDto;
 import org.republica.easy.republicaeasy.Entities.LoginResponse;
 import org.republica.easy.republicaeasy.Entities.RefreshRequest;
 import org.republica.easy.republicaeasy.Entities.User;
@@ -23,7 +24,13 @@ public class Auth {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@RequestBody UserRegisterDto dto) {
+
+        User user = new User();
+        user.setName(dto.name());
+        user.setEmail(dto.email());
+        user.setPassword(dto.password());
+
         return service.register(user);
     }
 
