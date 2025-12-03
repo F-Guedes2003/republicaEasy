@@ -12,7 +12,8 @@ public class Republica {
     private UUID id;
     private String name;
     private String description;
-    private String localization;
+    @Embedded
+    private Localization localization;
     private String imageUrl;
     private int limitSpot;
     private String contact;
@@ -45,11 +46,11 @@ public class Republica {
         this.description = description;
     }
 
-    public String getLocalization() {
+    public Localization getLocalization() {
         return localization;
     }
 
-    public void setLocalization(String localization) {
+    public void setLocalization(Localization localization) {
         this.localization = localization;
     }
 
@@ -91,12 +92,15 @@ public class Republica {
 
     @Override
     public String toString() {
-        return "Republica{name='" + name + '\'' +
+        return "Republica{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", localization='" + localization + '\'' +
+                ", localization=" + localization +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", limitSpot=" + limitSpot +
-                ", contact=" + contact +
+                ", contact='" + contact + '\'' +
+                ", users=" + users +
                 '}';
     }
 }

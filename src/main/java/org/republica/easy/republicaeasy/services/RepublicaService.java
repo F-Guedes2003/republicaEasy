@@ -26,14 +26,7 @@ public class RepublicaService {
                             400,
                             null));
         }
-        if(republica.toString().contains("null")){
-            System.out.println(republica.toString());
-            return ResponseEntity.badRequest().body(
-                    new RepublicaCriadaResponseDto(
-                            "some attribute is null",
-                              400,
-                               null));
-        }
+
         var republicaCriada = repository.save(republica);
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new RepublicaCriadaResponseDto(

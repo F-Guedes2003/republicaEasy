@@ -8,12 +8,20 @@ public class Localization {
 
     private String city;
     private String state;
+    private String neighborhood;
+    private Integer number;
+    private String cep;
+    private String street;
 
     public Localization() {}
 
-    public Localization(String city, String state) {
+    public Localization(String city, String state, String neighborhood, int number, String cep, String street) {
         this.city = city;
         this.state = state;
+        this.neighborhood = neighborhood;
+        this.number = number;
+        this.cep = cep;
+        this.street = street;
     }
 
     public String getCity() {
@@ -32,6 +40,22 @@ public class Localization {
         this.state = state;
     }
 
+    public String getNeighborhood() {return neighborhood;}
+
+    public void setNeighborhood(String neighborhood) {this.neighborhood = neighborhood;}
+
+    public Integer getNumber() {return number;}
+
+    public void setNumber(int number) {this.number = number;}
+
+    public String getCep() {return cep;}
+
+    public void setCep(String cep) {this.cep = cep;}
+
+    public String getStreet() {return street;}
+
+    public void setStreet(String street) {this.street = street;}
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -48,6 +72,13 @@ public class Localization {
 
     @Override
     public String toString() {
-        return "Localization{city='%s', state='%s'}".formatted(city, state);
+        return "Localization{" +
+                "city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", neighborhood='" + neighborhood + '\'' +
+                ", number=" + number +
+                ", cep='" + cep + '\'' +
+                ", street='" + street + '\'' +
+                '}';
     }
 }
