@@ -1,5 +1,6 @@
 package org.republica.easy.republicaeasy.controller;
 
+import org.republica.easy.republicaeasy.DTOS.RemoverMembroRequestDto;
 import org.republica.easy.republicaeasy.DTOS.RepublicaCriadaResponseDto;
 import org.republica.easy.republicaeasy.DTOS.UsuarioLinkadoRequestDto;
 import org.republica.easy.republicaeasy.DTOS.UsuarioLinkadoResponseDto;
@@ -47,6 +48,13 @@ public class RepublicaController {
     ResponseEntity<UsuarioLinkadoResponseDto> addEstudanteNaRepublica(
             @RequestBody UsuarioLinkadoRequestDto req) {
         return userRepService.linkaUsuarioERepublica(req);
+    }
+
+    //remover membro da republica
+    @PutMapping("/removeUser")
+    ResponseEntity<Void> removeMembro(@RequestBody RemoverMembroRequestDto req){
+
+        return userRepService.removeMembro(req);
     }
 
     // 1. Listar todas as repúblicas

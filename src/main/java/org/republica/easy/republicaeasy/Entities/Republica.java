@@ -17,7 +17,7 @@ public class Republica {
     private String imageUrl;
     private int limitSpot;
     private String contact;
-    @OneToMany(mappedBy = "republica", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "republica", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
     protected Republica() {}

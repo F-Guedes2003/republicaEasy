@@ -1,14 +1,19 @@
 package org.republica.easy.republicaeasy.services;
 
+import org.republica.easy.republicaeasy.DTOS.RemoverMembroRequestDto;
 import org.republica.easy.republicaeasy.DTOS.UserResponseDto;
 import org.republica.easy.republicaeasy.DTOS.UsuarioLinkadoRequestDto;
 import org.republica.easy.republicaeasy.DTOS.UsuarioLinkadoResponseDto;
 import org.republica.easy.republicaeasy.Entities.Localization;
+import org.republica.easy.republicaeasy.Entities.Republica;
+import org.republica.easy.republicaeasy.Entities.User;
 import org.republica.easy.republicaeasy.repositories.RepublicaRepository;
 import org.republica.easy.republicaeasy.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UserRepService {
@@ -87,5 +92,23 @@ public class UserRepService {
                         userDto
                 )
         );
+    }
+
+    public ResponseEntity<Void> removeMembro(RemoverMembroRequestDto reqDto) {
+
+        User membro = userRepository.findUserByEmail(reqDto.email())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+
+        UUID id = membro.getRepublica().getId();
+
+        Republica rep = republicaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("República não encontrada"));
+
+        rep.removeUser(membro);
+        republicaRepository.save(rep);
+        userRepository.save(membro);
+
+        return ResponseEntity.noContent().build();
     }
 }
