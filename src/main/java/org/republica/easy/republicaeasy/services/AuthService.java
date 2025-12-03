@@ -83,7 +83,8 @@ public class AuthService {
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
-                user.getRepublica() != null ? user.getRepublica().getId() : null
+                user.getRepublica() != null ? user.getRepublica().getId() : null,
+                user.getLocalization()
         );
 
         LoginResponse response = new LoginResponse();
@@ -107,7 +108,8 @@ public class AuthService {
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
-                user.getRepublica() != null ? user.getRepublica().getId() : null
+                user.getRepublica() != null ? user.getRepublica().getId() : null,
+                user.getLocalization()
         );
 
         LoginResponse loginResponse = new LoginResponse();

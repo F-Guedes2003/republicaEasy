@@ -52,7 +52,6 @@ public class UserRepService {
         var republica = possiblyRepublica.get();
         var usuario = possiblyUsuario.get();
 
-        // Copia a localização da república para o usuário
         if (republica.getLocalization() != null) {
             var loc = republica.getLocalization();
 
@@ -60,14 +59,14 @@ public class UserRepService {
             userLoc.setCity(loc.getCity());
             userLoc.setState(loc.getState());
             userLoc.setNeighborhood(loc.getNeighborhood());
-            userLoc.setNumber(loc.getNumber()); // OK se setter aceitar Integer
+            userLoc.setNumber(loc.getNumber());
             userLoc.setCep(loc.getCep());
             userLoc.setStreet(loc.getStreet());
 
             usuario.setLocalization(userLoc);
         }
 
-        // vincula normalmente
+
         republica.addUser(usuario);
 
         userRepository.save(usuario);
@@ -77,7 +76,8 @@ public class UserRepService {
                 usuario.getId(),
                 usuario.getEmail(),
                 usuario.getName(),
-                republica.getId()
+                republica.getId(),
+                usuario.getLocalization()
         );
 
         return ResponseEntity.ok().body(

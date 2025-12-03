@@ -25,9 +25,10 @@ public class UserController {
                 .map(user -> ResponseEntity.ok(
                         new UserResponseDto(
                                 user.getId(),
-                                user.getName(),
                                 user.getEmail(),
-                                user.getRepublica() != null ? user.getRepublica().getId() : null
+                                user.getName(),
+                                user.getRepublica() != null ? user.getRepublica().getId() : null,
+                                user.getLocalization()
                         )
                 ))
                 .orElse(ResponseEntity.notFound().build());
@@ -40,9 +41,10 @@ public class UserController {
                 .map(user ->  ResponseEntity.ok(
                             new UserResponseDto(
                             user.getId(),
-                            user.getName(),
                             user.getEmail(),
-                            user.getRepublica() != null ? user.getRepublica().getId() : null
+                            user.getName(),
+                            user.getRepublica() != null ? user.getRepublica().getId() : null,
+                            user.getLocalization()
                         )
                 ))
                 .orElse(ResponseEntity.notFound().build());
@@ -57,14 +59,14 @@ public class UserController {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setName(updates.getName());
-                    user.setLocalization(updates.getLocalization());
                     userRepository.save(user);
 
                     return ResponseEntity.ok(new UserResponseDto(
                             user.getId(),
-                            user.getName(),
                             user.getEmail(),
-                            user.getRepublica() != null ? user.getRepublica().getId() : null
+                            user.getName(),
+                            user.getRepublica() != null ? user.getRepublica().getId() : null,
+                            user.getLocalization()
                     ));
                 })
                 .orElse(ResponseEntity.notFound().build());
